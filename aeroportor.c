@@ -77,6 +77,7 @@ int main ()
     FILA_VOO FVOO; FILA_PASSAGEIROS FPASSAGEIROS; FILA_PASSAGENS FPASSAGENS;
     Inic1(&FVOO); Inic2(&FPASSAGEIROS); Inic3(&FPASSAGENS);
     int opcao1 = 0, opcao2 = 0;
+    int Identificador;
     
     while(opcao1 != 5 )
     {
@@ -88,7 +89,7 @@ int main ()
         {
         case (1):               //Voos
         
-            printf("Voos - O que deseja fazer?\n");
+            printf("Voos - O que deseja acessar?\n");
             printf("1 - Incluir\n2 - Alterar\n3 - Excluir\n4 - Consultar\n");
             scanf("%d", &opcao2);
                 switch(opcao2)
@@ -102,7 +103,9 @@ int main ()
                         break;
 
                     case(3):
-                        ApagarVoo(&FVOO);
+                        printf("Qual voo deseja apagar? ");
+                        scanf("%d", &Identificador);
+                        ApagarVoo(&FVOO, &Identificador);
                          printf("Voo excluido com sucesso!\n\n");
                         break;
                     
@@ -230,6 +233,7 @@ void InserirVoo(FILA_VOO *FilaVoo)
         printf("Insira a quantidade de passageiros do voo: "); scanf("%d", &QtdPassageiros);
         
         //Enviando valores inseridos
+        (*FilaVoo)->Identificador = Identificador;
         (*FilaVoo)->Aeronave = Aeronave;
         strcpy((*FilaVoo)->Empresa, Empresa);
         strcpy((*FilaVoo)->Origem, Origem);
@@ -254,31 +258,30 @@ void ListarVoo(FILA_VOO FilaVoo)
     VOO *temp = FilaVoo;
     VOO *anterior = NULL;
 // Caso 1: O nó a ser removido está no início
-    
-    if (temp != NULL && temp->idade == idadeRemover) {
-        *cabeca = temp->proximo;  // Atualiza o ponteiro da cabeça
+
+    if (temp != NULL && temp->Identificador == Identificador) {
+        anterior = temp->Prox;  // Atualiza o ponteiro da cabeça
         free(temp);  // Libera a memória do nó removido
         return;
     }
 
     // Caso 2: Percorrer a lista para encontrar o nó a ser removido
-    while (temp != NULL && temp->idade != idadeRemover) {
+    while (temp != NULL && temp->Identificador != Identificador) {
         anterior = temp;
-        temp = temp->proximo;
+        temp = temp->Prox;
     }
 
     // Se o nó não foi encontrado na lista
     if (temp == NULL) {
-        printf("Idade não encontrada na lista.\n");
+        printf("Identificador não encontrada na lista.\n");
         return;
     }
 
     // Caso 3: O nó a ser removido está no meio ou no final
-    anterior->proximo = temp->proximo;
+    anterior->Prox = temp->Prox;
     free(temp);  // Libera a memória do nó removido
 }
 
-}
 
 
 //Procedimentos Passageiros
